@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SMSWidget.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.SMSWidget.AppWidgetContainer">
+
+    <ImageView
+        android:id="@+id/iv_configure"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="3dp"
+        android:contentDescription="@string/settings"
+        android:src="@drawable/ic_baseline_settings_24" />
+
+    <TextView
+        android:id="@+id/tv_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/fl_refresh"
+        android:singleLine="true"
+        tools:text="Updated Nov 17 10:12 AM" />
+
+    <FrameLayout
+        android:id="@+id/fl_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true">
+
+        <ProgressBar
+            android:id="@+id/pb_refresh"
+            android:layout_width="24dp"
+            android:layout_height="20dp"
+            android:indeterminate="true"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_refresh"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:contentDescription="@string/refresh"
+            android:src="@drawable/ic_baseline_sync_24"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fl_refresh">
+
+        <ListView
+            android:id="@+id/lv_messages"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:scrollbars="none"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_empty_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:text="@string/loading"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_no_perms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/add_permissions"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_edit_sms"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ic_baseline_circle_24"
+            android:contentDescription="@string/create"
+            android:src="@drawable/ic_outline_edit_24" />
+
+    </RelativeLayout>
+</RelativeLayout>
