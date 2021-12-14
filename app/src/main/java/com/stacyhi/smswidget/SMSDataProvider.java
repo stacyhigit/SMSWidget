@@ -46,8 +46,8 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
 
         RemoteViews loadingDoneView = new RemoteViews(mContext.getPackageName(), R.layout.sms_widget_provider);
         if (PermissionManager.checkAllPermissions(mContext)) {
-            initTestData();
-            //messageList = getSmsMms();
+            //initTestData();
+            messageList = getSmsMms();
             loadingDoneView.setScrollPosition(R.id.lv_messages,0);
         } else {
             loadingDoneView.setTextViewText(R.id.tv_empty_listview, mContext.getResources().getString(R.string.add_permissions));
