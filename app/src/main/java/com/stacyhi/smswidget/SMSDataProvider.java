@@ -42,7 +42,8 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         RemoteViews loadingView = new RemoteViews(mContext.getPackageName(), R.layout.sms_widget_provider);
         loadingView.setViewVisibility(R.id.pb_refresh, View.VISIBLE);
         loadingView.setViewVisibility(R.id.iv_refresh, View.INVISIBLE);
-        appWidgetManager.updateAppWidget(appWidgetId, loadingView);
+        loadingView.setTextViewText(R.id.tv_empty_listview, "Loading");
+        appWidgetManager.partiallyUpdateAppWidget(appWidgetId, loadingView);
 
         RemoteViews loadingDoneView = new RemoteViews(mContext.getPackageName(), R.layout.sms_widget_provider);
         if (PermissionManager.checkAllPermissions(mContext)) {
@@ -92,7 +93,7 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
             Log.d(TAG, "getViewAt: ERROR");
             e.printStackTrace();
             setErrorView("loading messages");
-            return null;
+            return views;
         }
     }
 
@@ -232,7 +233,7 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         errorView.setTextViewText(R.id.tv_updated, "Updated " + dateString);
         errorView.setViewVisibility(R.id.pb_refresh, View.INVISIBLE);
         errorView.setViewVisibility(R.id.iv_refresh, View.VISIBLE);
-        appWidgetManager.updateAppWidget(appWidgetId, errorView);
+        appWidgetManager.partiallyUpdateAppWidget(appWidgetId, errorView);
     }
 
     public static String formatNumber(String number) {
