@@ -123,7 +123,7 @@ public class SMSWidgetProvider extends AppWidgetProvider {
 
         switch (intent.getAction()) {
             case ACTION_REFRESH:
-                if (appWidgetId == 0) {
+                if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
                     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_messages);
                 } else {
                     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_messages);
@@ -186,12 +186,6 @@ public class SMSWidgetProvider extends AppWidgetProvider {
 
         SMSAlarm smsAlarm = new SMSAlarm(context.getApplicationContext());
         smsAlarm.startAlarm(smsUpdateInterval);
-    }
-
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-        updateAppWidget(context, appWidgetManager, appWidgetId);
     }
 
     public static String getFormattedDate (long date) {
