@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
             android:singleLine="true"
-            tools:text="Updated Nov 17 10:12 AM"
+            tools:text="Updated 10:12 AM"
             android:layout_weight="1"
             android:gravity="end"/>
 
