@@ -103,6 +103,13 @@ public class SMSWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(TAG, "onUpdate");
+        //TODO: Make update interval configurable
+        int smsUpdateInterval = SMSWidgetConfigureActivity.loadPref(context, 0, SMSWidgetConfigureActivity.KEY_SMS_UPDATE_INTERVAL, 10);
+        Log.d(TAG, "onUpdate: Adding alarm to update widget every " + smsUpdateInterval + " minutes");
+
+        SMSAlarm smsAlarm = new SMSAlarm(context.getApplicationContext());
+        smsAlarm.startAlarm(smsUpdateInterval);
+
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -181,7 +188,7 @@ public class SMSWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         //TODO: Make update interval configurable
-        int smsUpdateInterval = SMSWidgetConfigureActivity.loadPref(context, 0, SMSWidgetConfigureActivity.KEY_SMS_UPDATE_INTERVAL, 5);
+        int smsUpdateInterval = SMSWidgetConfigureActivity.loadPref(context, 0, SMSWidgetConfigureActivity.KEY_SMS_UPDATE_INTERVAL, 10);
         Log.d(TAG, "onEnabled: Adding alarm to update widget every " + smsUpdateInterval + " minutes");
 
         SMSAlarm smsAlarm = new SMSAlarm(context.getApplicationContext());
