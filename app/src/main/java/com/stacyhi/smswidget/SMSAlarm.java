@@ -15,6 +15,7 @@ public class SMSAlarm {
 
     public SMSAlarm(Context context) { this.context = context;}
     public void startAlarm(int smsUpdateInterval) {
+        stopAlarm();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, smsUpdateInterval);
 
