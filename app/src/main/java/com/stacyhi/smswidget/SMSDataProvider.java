@@ -49,6 +49,15 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         if (PermissionManager.checkAllPermissions(mContext)) {
             //initTestData();
             messageList = getSmsMms();
+
+            int unreadCount = getUnreadSmsCount();
+            if (unreadCount > 0) {
+                loadingDoneView.setTextViewText(R.id.tv_sms_count, Integer.toString(unreadCount));
+                loadingDoneView.setViewVisibility(R.id.tv_sms_count, View.VISIBLE);
+            } else {
+                loadingDoneView.setViewVisibility(R.id.tv_sms_count, View.GONE);
+            }
+
             loadingDoneView.setScrollPosition(R.id.lv_messages,0);
         } else {
             loadingDoneView.setTextViewText(R.id.tv_empty_listview, mContext.getResources().getString(R.string.add_permissions));
@@ -221,6 +230,23 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
             return new RecipientNoContact("", "", number);
         }
         return recipient;
+    }
+
+    public int getUnreadSmsCount(){
+        int count = 0;
+        final Uri mmsSms = Uri.parse("content://mms-sms/complete-conversations");
+        final String[] projection = new String[]{"read"};
+        Cursor unreadCursor = mContext.getContentResolver().query(mmsSms, projection, "read = 0", null, null);
+        try {
+            count = unreadCursor.getCount();
+        } catch (Exception e) {
+            Log.d(TAG, "getUnreadSmsCount: ERROR");
+            e.printStackTrace();
+        }
+        if (unreadCursor != null) {
+            unreadCursor.close();
+        }
+        return count;
     }
 
     public void setErrorView(String errorMessage) {
