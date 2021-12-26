@@ -49,6 +49,15 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         if (PermissionManager.checkAllPermissions(mContext)) {
             //initTestData();
             messageList = getSmsMms();
+
+            int unreadCount = getUnreadSmsCount();
+            if (unreadCount > 0) {
+                loadingDoneView.setTextViewText(R.id.tv_sms_count, Integer.toString(unreadCount));
+                loadingDoneView.setViewVisibility(R.id.tv_sms_count, View.VISIBLE);
+            } else {
+                loadingDoneView.setViewVisibility(R.id.tv_sms_count, View.GONE);
+            }
+
             loadingDoneView.setScrollPosition(R.id.lv_messages,0);
         } else {
             loadingDoneView.setTextViewText(R.id.tv_empty_listview, mContext.getResources().getString(R.string.add_permissions));
@@ -203,9 +212,9 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         Recipient recipient;
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         String[] projection = new String[]{"display_name","label"};
-        Cursor contactsCursor = mContext.getContentResolver().query(uri, projection, null, null, null);
 
         try {
+            Cursor contactsCursor = mContext.getContentResolver().query(uri, projection, null, null, null);
             if (contactsCursor.moveToFirst()) {
                 recipient = new Recipient(contactsCursor.getString(contactsCursor.getColumnIndexOrThrow(projection[0])),
                         contactsCursor.getString(contactsCursor.getColumnIndexOrThrow(projection[1])), number);
@@ -221,6 +230,24 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
             return new RecipientNoContact("", "", number);
         }
         return recipient;
+    }
+
+    public int getUnreadSmsCount(){
+        int count = 0;
+        final Uri mmsSms = Uri.parse("content://mms-sms/complete-conversations");
+        final String[] projection = new String[]{"read"};
+
+        try {
+            Cursor unreadCursor = mContext.getContentResolver().query(mmsSms, projection, "read = 0", null, null);
+            count = unreadCursor.getCount();
+            if (unreadCursor != null) {
+                unreadCursor.close();
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "getUnreadSmsCount: ERROR");
+            e.printStackTrace();
+        }
+        return count;
     }
 
     public void setErrorView(String errorMessage) {
