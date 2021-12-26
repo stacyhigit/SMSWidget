@@ -212,9 +212,9 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         Recipient recipient;
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         String[] projection = new String[]{"display_name","label"};
-        Cursor contactsCursor = mContext.getContentResolver().query(uri, projection, null, null, null);
 
         try {
+            Cursor contactsCursor = mContext.getContentResolver().query(uri, projection, null, null, null);
             if (contactsCursor.moveToFirst()) {
                 recipient = new Recipient(contactsCursor.getString(contactsCursor.getColumnIndexOrThrow(projection[0])),
                         contactsCursor.getString(contactsCursor.getColumnIndexOrThrow(projection[1])), number);
@@ -236,15 +236,16 @@ public class SMSDataProvider implements RemoteViewsService.RemoteViewsFactory{
         int count = 0;
         final Uri mmsSms = Uri.parse("content://mms-sms/complete-conversations");
         final String[] projection = new String[]{"read"};
-        Cursor unreadCursor = mContext.getContentResolver().query(mmsSms, projection, "read = 0", null, null);
+
         try {
+            Cursor unreadCursor = mContext.getContentResolver().query(mmsSms, projection, "read = 0", null, null);
             count = unreadCursor.getCount();
+            if (unreadCursor != null) {
+                unreadCursor.close();
+            }
         } catch (Exception e) {
             Log.d(TAG, "getUnreadSmsCount: ERROR");
             e.printStackTrace();
-        }
-        if (unreadCursor != null) {
-            unreadCursor.close();
         }
         return count;
     }
